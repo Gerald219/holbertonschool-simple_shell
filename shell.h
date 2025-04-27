@@ -7,7 +7,8 @@
  */
 
 void display_prompt(void);
-char **parser(char *intput);
+char **parser_input(char *intput);
+void executor(char **args);
 
 
 #endif /* SHELL_H */
