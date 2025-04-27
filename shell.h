@@ -9,6 +9,6 @@
 void display_prompt(void);
 char **parser_input(char *intput);
 void executor(char **args);
-
+void exit_shell(char **args);
 
 #endif /* SHELL_H */
