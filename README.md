@@ -46,6 +46,8 @@ $ exit
 - `executor_path.c` — Finds full path, builds path, executes commands.
 **Prototypes:** `executor`, `split_path`, `find_full_path`, `build_path`, `_getenv`, `free_array`
 
+- '_ getenv()' — is a custom function that retrieves environment variables (like PATH) withouth using forbiden system getenv().
+
 - `exit_shell.c` — Handles the `exit` built-in.
 **Prototype:** `exit_shell`
 
