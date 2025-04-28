@@ -36,5 +36,5 @@ int main(void)
 		executor(args);
 	}
 	free(input);
-	return(0);
+	return (0);
 }

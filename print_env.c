@@ -2,8 +2,6 @@
 #include <unistd.h>
 #include <string.h>
 
-extern char **environ;
-
 /**
  * print_env - prints the current enviroment variables
  * @args: unused but keeping for compatibility
@@ -22,6 +20,5 @@ int print_env(char **args)
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
-
-	return(1);
+	return (1);
 }

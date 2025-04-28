@@ -1,7 +1,5 @@
 #include "shell.h"
-#include <string.h>\
-
-extern char **environ;
+#include <string.h>
 
 /**
  * builtin_handler - handles commands like exit & env

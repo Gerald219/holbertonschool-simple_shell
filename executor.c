@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-extern char **environ;
-
 /**
  * executor - Run a command in a child process
  * @args: Tokenized input command
@@ -39,7 +37,6 @@ void executor(char **args)
 		perror("./hsh");
 		return;
 	}
-
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -47,11 +44,9 @@ void executor(char **args)
 		free(full_path);
 		return;
 	}
-
 	if (child_pid == 0)
 		execve(full_path, args, environ);
 	else
 		waitpid(child_pid, &status, 0);
-
 	free(full_path);
 }
