@@ -53,7 +53,9 @@ After a command is typed or read:
 
 - If the name doesn't have slashes, it looks for it in the \fIPATH\fR variable.
 
-- If it finds it, it forks and uses \fIexecve(2)\fR to run it.
+- To find directories listed in PATH, the shell uses a custom function called \fB_getenv\fR.
+
+- If the command is found, it forks and uses \fIexecve(2)\fR to run it.
 
 - If not found, it will print an error and return 127.
 
@@ -107,10 +109,14 @@ Project files used:
 - exits properly and frees memory
 
 .I print_env.c
-- prints env vars
+- prints env vars.
 
-.SH SEE ALSO
-sh(1), bash(1), execve(2), fork(2), waitpid(2), getenv(3), perror(3)
+.I getenv.c
+- custom implementation of _getenv, to fetch environment variables manually
+
+.SH INTERNAL FUNCTIONS
+.B _getenv
+- Custom function written to search environment variables manually, without using the standard library getenv(3).
 
 .SH AUTHORS
 Gerald F. Diaz Mulero <gdmasm@gmail.com>
