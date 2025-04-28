@@ -13,7 +13,9 @@ void exit_shell(char **args);
 int builtin_handler(char **args);
 int print_env(char **args);
 
-
+char **split_path(char *path_env);
+char *build_path(char *folder, char *command);
+char *find_full_path(char *command, char **path_dirs);
 
 char *_getenv(const char *name);
 void free_array(char **array);
