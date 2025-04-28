@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <string.h>
+extern char **environ;
 
 /**
  * builtin_handler - handles commands like exit & env
@@ -20,7 +21,7 @@ int builtin_handler(char **args)
 
 	if (strcmp(args[0], "env") == 0)
 	{
-		print_env();
+		print_env(args);
 		return (1);
 	}
 

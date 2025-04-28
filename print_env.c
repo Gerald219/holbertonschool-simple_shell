@@ -1,5 +1,8 @@
 #include "shell.h"
 #include <unistd.h>
+#include <string.h>
+
+extern char **environ;
 
 /**
  * print_env - prints the current enviroment variables
@@ -15,10 +18,10 @@ int print_env(char **args)
 
 	while (environ[i])
 	{
-		write(STROUT_FILENO, environ[i], strlen(environ[i]));
+		write(STDOUT_FILENO, environ[i], strlen(environ[i]));
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 
-	return (1);
+	return(1);
 }
