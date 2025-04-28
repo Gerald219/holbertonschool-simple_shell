@@ -1,0 +1,117 @@
+.\" Manpage for simple_shell
+.\" Created by Gerald F. Diaz Mulero - Holberton School (2-day rush project!)
+.TH SIMPLE_SHELL 1 "April 2025" "Holberton School" "SIMPLE_SHELL - manual page"
+
+.SH NAME
+simple_shell \- a basic UNIX command interpreter
+
+.SH SYNOPSIS
+.B ./hsh
+[\fIfilename\fR]
+
+.SH COPYRIGHT
+Copyright (C) 2025 by Gerald F. Diaz Mulero.  
+Built for Holberton School C programming sprint.
+
+.SH DESCRIPTION
+.B simple_shell
+is a simple command line shell that reads input and runs commands.
+
+It works by showing a prompt, taking what the user types, splitting it, and then running it if it can.
+
+The shell can run in two ways:
+- Interactive: you type commands live
+- Non-interactive: it reads commands from a file or a pipe
+
+.SH ARGUMENTS
+If you give it a filename when starting,
+simple_shell will try to read the commands from the file and run them.  
+
+If you don't give it anything, it will just stay open and wait for you to type.
+
+.SH DEFINITIONS
+Couple of quick definitions:
+
+- \fIblank\fR: spaces or tabs
+
+- \fIword\fR: anything typed together without spaces, the shell sees it like one thing
+
+- \fIname\fR: same as a word but has to start with a letter or underscore
+
+- \fIcontrol operators\fR: special symbols like \fI||\fR, \fI&&\fR, and \fI;\fR that changes how commands run
+
+.SH INVOCATION
+When you run
+.B ./hsh
+the shell will check if it's in a terminal (using \fIisatty(3)\fR).
+
+If it is, it shows the prompt and lets you type.  
+If not, it just reads commands without showing anything.
+
+.SH COMMAND EXECUTION
+After a command is typed or read:
+
+- If the name doesn't have slashes, it looks for it in the \fIPATH\fR variable.
+
+- If it finds it, it forks and uses \fIexecve(2)\fR to run it.
+
+- If not found, it will print an error and return 127.
+
+Built-in commands like \fBexit\fR and \fBenv\fR are handled inside the shell without making new processes.
+
+.SH ENVIRONMENT
+simple_shell copies the environment from wherever it was launched.
+
+When it runs commands, it gives them the environment variables too.
+
+.SH EXIT STATUS
+Exit codes:
+
+- 0 if everything worked
+
+- 127 if the command wasn't found
+
+- Other non-zero if something else failed
+
+.SH BUILTINS
+Built-in commands available:
+
+.B env
+- Prints the environment
+
+.B exit [status]
+- Exits the shell with a status number (or 0 if you don't say anything)
+
+.SH FILES
+Project files used:
+
+.I shell.h
+- header with includes and prototypes
+
+.I main.c
+- entry point with the shell loop
+
+.I prompt.c
+- shows the prompt
+
+.I parser.c
+- splits what you type into commands
+
+.I executor_path.c
+- runs the commands
+
+.I builtin_handler.c
+- manages built-in stuff
+
+.I exit_shell.c
+- exits properly and frees memory
+
+.I print_env.c
+- prints env vars
+
+.SH SEE ALSO
+sh(1), bash(1), execve(2), fork(2), waitpid(2), getenv(3), perror(3)
+
+.SH AUTHORS
+Gerald F. Diaz Mulero <gdmasm@gmail.com>
+

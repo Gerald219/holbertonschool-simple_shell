@@ -84,7 +84,7 @@ $ exit
 
 ## Requirements
 
-- Compiled on Ubuntu 20.04 LTS
+- Compiled on Ubuntu 20.041 LTS
 
 - Using gcc 9.3.0 and flags: `-Wall -Werror -Wextra -pedantic -std=gnu89`
 
@@ -99,3 +99,6 @@ $ exit
 - Only necessary system calls used
 
 - Shell behaves like `/bin/sh` for command execution and error handling
+
+## AUTHORS 
+- Gerald F. Diaz Mulero | GitHub: [@gerald219]

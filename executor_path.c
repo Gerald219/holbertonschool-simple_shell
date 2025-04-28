@@ -83,7 +83,7 @@ char *find_full_path(char *command, char **path_dirs)
     char *full_path;
     int i = 0;
 
-    path_dirs = split_path(getenv("PATH"));
+    path_dirs = split_path(_getenv("PATH"));
 
     if (!command || !path_dirs)
         return (NULL);

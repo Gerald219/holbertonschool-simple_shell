@@ -6,6 +6,8 @@
  * contents: function prototypes for shell
  */
 
+char *_getenv(const char *name);
+
 void display_prompt(void);
 void executor(char **);
 

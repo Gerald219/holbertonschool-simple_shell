@@ -27,7 +27,7 @@ void executor(char **args)
 		exit(EXIT_FAILURE);
 	}
 
-	path_dirs = split_path(getenv("PATH"));
+	path_dirs = split_path(_getenv("PATH"));
 	full_path = find_full_path(args[0], path_dirs);
 	if (args[0][0] == '/')
 	{
