@@ -32,24 +32,31 @@ $ /bin/ls
 To exit the shell, type:
 $ exit
 
-## FILES
-** This Shell terminal is organized in multiple files. 
+## Project Structure
+### Files ->
+- `main.c` — Starts shell loop, handles input and execution.
+**Prototypes:** `display_prompt`, `parser_input`, `executor`, `exit_shell`, `handle_builtin`
 
-- `main.c` — Handles program start, prompt loop.
+- `prompt.c` — Prints the prompt `$`.
+**Prototype:** `display_prompt`
 
-- `prompt.c` — Displays the shell prompt.
+- `parser.c` — Splits user input into arguments.
+**Prototype:** `parser_input`
 
-- `parser.c` — Parses user input into command arguments.
+- `executor_path.c` — Finds full path, builds path, executes commands.
+**Prototypes:** `executor`, `split_path`, `find_full_path`, `build_path`, `_getenv`, `free_array`
 
-- `executor_path.c` — Handles command execution and path resolution.
+- `exit_shell.c` — Handles the `exit` built-in.
+**Prototype:** `exit_shell`
 
-- `exit_shell.c` — Manages built-in `exit` command.
-
-- `builtin_handler.c` — Manages built-in `env` command.
+- `builtin_handler.c` — Manages built-ins like `env`.
+**Prototype:** `handle_builtin`
 
 - `print_env.c` — Prints environment variables.
+**Prototype:** `print_env`
 
-- `shell.h` — Header file with prototypes and shared libraries.
+- `shell.h` — Main header file, contains all prototypes and libraries.
+
 
 
 ## FEATURES OF THIS SHELL
