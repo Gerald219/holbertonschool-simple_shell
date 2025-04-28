@@ -8,7 +8,7 @@
 
 void display_prompt(void);
 
-
+char **parser_input(char *input);
 void exit_shell(char **args);
 int builtin_handler(char **args);
 int print_env(char **args);
