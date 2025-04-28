@@ -8,6 +8,7 @@
 
 void display_prompt(void);
 void executor(char **);
+
 char **parser_input(char *input);
 void exit_shell(char **args);
 int builtin_handler(char **args);

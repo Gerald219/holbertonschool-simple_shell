@@ -16,11 +16,24 @@ void executor(char **args)
 	pid_t child_pid;
 	int status;
 	char *full_path;
+	char **path_dirs;
 
 	if (!args || !args[0])
 		return;
+	if (args[0][0] == '/')
+	{
+		execve(args[0], args, environ);
+		perror("./hsh");
+		exit(EXIT_FAILURE);
+	}
 
-	full_path = find_full_path(args[0]);
+	path_dirs = split_path(getenv("PATH"));
+	full_path = find_full_path(args[0], path_dirs);
+	if (args[0][0] == '/')
+	{
+		execve(args[0], args, environ);
+	}
+
 	if (!full_path)
 	{
 		perror("./hsh");

@@ -1,6 +1,6 @@
-#include "shell.h" /* Include header with prototypes */
-#include <stdlib.h> /* For malloc and free */
-#include <string.h> /* For strtok */
+#include "shell.h"
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * parser_input - Split input string into arguments (tokens)
