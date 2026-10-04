@@ -1,106 +1,72 @@
-# Simple Shell Project 2025 
+# Simple shell in C
 
-This project is a basic Unix command line interpreter 'shell', a mini terminal, written with 'C language'. It reads commands typed by the use, executes them and displays the content to screen.
+A Holberton School coursework project: a small Unix command interpreter written in C. It demonstrates input parsing, dynamic allocation, environment variables, PATH lookup, and process creation with `fork`, `execve`, and `waitpid`.
 
-## How to Compile
+## Build and run
 
-The following command:
+Requirements: Linux/POSIX environment, GCC, and Make. Python 3 is needed for the regression tests.
 
-### gcc -Wall -Werror -Wextra -pedantic -stdgnu89 *.c -o hsh
+```bash
+make
+./hsh
+```
 
-* -Wall = Enable all warnings.
-* -Werror = Treat Warnings as errors.
-* -Wextra = Enable extra warnings.
-* -pedantic = Enforce strict ISO C compliance.
-* -std+gnu89 = use the OLD version GNU89 C Standard.
+Or compile directly:
 
-## How to Run
+```bash
+gcc -Wall -Wextra -Werror -pedantic -std=gnu89 *.c -o hsh
+```
 
-To run the Simple Shell:
+Interactive example:
 
-1. Open your terminal.
-2. Compile the program if you haven't already:
-`gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh`
-3. Start the shell by running:
-`./hsh`
-4. You will see a prompt (`$`) waiting for your commands.
-
-### Example
-
-$ /bin/ls
-(build_path.c, executor.c, find_full_path.c, main.c, etc.)
-To exit the shell, type:
+```text
+$ /bin/echo hello
+hello
+$ echo world
+world
 $ exit
+```
 
-## Project Structure
-### Files ->
-- `main.c` — Starts shell loop, handles input and execution.
-**Prototypes:** `display_prompt`, `parser_input`, `executor`, `exit_shell`, `handle_builtin`
+Commands also work through standard input:
 
-- `prompt.c` — Prints the prompt `$`.
-**Prototype:** `display_prompt`
+```bash
+printf '/bin/echo first\necho second\n' | ./hsh
+```
 
-- `parser.c` — Splits user input into arguments.
-**Prototype:** `parser_input`
+This prints `first` and `second` on separate lines, without an interactive prompt.
 
-- `executor_path.c` — Finds full path, builds path, executes commands.
-**Prototypes:** `executor`, `split_path`, `find_full_path`, `build_path`, `_getenv`, `free_array`
+## Supported behavior
 
-- '_ getenv()' — is a custom function that retrieves environment variables (like PATH) withouth using forbiden system getenv().
+- Commands with absolute paths, relative paths, or PATH lookup.
+- Whitespace-separated arguments and blank input lines.
+- `env` to print environment variables, `exit` to leave the shell, and EOF to finish input.
+- Child exit status propagation; 127 for missing commands and 126 for direct execution failures.
+- Continued command processing after an execution failure.
 
-- `exit_shell.c` — Handles the `exit` built-in.
-**Prototype:** `exit_shell`
+This is a learning project, not a full POSIX shell. It does not implement quoting, pipes, redirection, variable expansion, job control, or numeric arguments to `exit`.
 
-- `builtin_handler.c` — Manages built-ins like `env`.
-**Prototype:** `handle_builtin`
+## Checks
 
-- `print_env.c` — Prints environment variables.
-**Prototype:** `print_env`
+```bash
+make test
+```
 
-- `shell.h` — Main header file, contains all prototypes and libraries.
+The process-level tests cover multiple commands, PATH resolution, relative execution, more than 64 arguments and PATH entries, built-ins, quiet EOF, and recovery from execution failures. GitHub Actions runs the same checks on pushes and pull requests.
 
+## Source guide
 
+| File | Responsibility |
+| --- | --- |
+| `main.c` | Read commands, dispatch built-ins, and release input memory |
+| `parser.c` | Split input into arguments with a growing pointer array |
+| `executor.c` | Fork a child, execute the command, and collect its status |
+| `executor_path.c` | Split PATH, find executables, and free owned path strings |
+| `_getenv.c` | Look up environment values |
+| `builtin_handler.c`, `print_env.c`, `exit_shell.c` | Basic built-in handling |
+| `prompt.c`, `shell.h` | Interactive prompt and shared declarations |
 
-## FEATURES OF THIS SHELL
+Argument tokens borrow memory from the input buffer; PATH entries own their allocated strings. Generated binaries and editor backups are excluded from version control.
 
-✔️  Displays a custom prompt ($)
+## Author
 
-✔️  Reads user input
-
-✔️  Tokenizes (splits) input
-
-✔️  Executes commands like /bin/ls
-
-✔️  Handles PATH resolution
-
-✔️  Runs commands with or without /bin/
-
-✔️  Handles exit command (exit cleanly)
-
-✔️  Handles env command (prints environment variables)
-
-✔️  Handles simple errors (command not found)
-
-✔️  Gracefully handles Ctrl+D (EOF)
-
-
-## Requirements
-
-- Compiled on Ubuntu 20.041 LTS
-
-- Using gcc 9.3.0 and flags: `-Wall -Werror -Wextra -pedantic -std=gnu89`
-
-- Code style fully compliant with Betty
-
-- No memory leaks (Valgrind tested)
-
-- Max 5 functions per .c file
-
-- Header files properly include-guarded
-
-- Only necessary system calls used
-
-- Shell behaves like `/bin/sh` for command execution and error handling
-
-## AUTHORS 
-- Gerald F. Diaz Mulero | GitHub: [@gerald219]
+[Gerald Mulero (@Gerald219)](https://github.com/Gerald219). See `AUTHORS` for the original contributor attribution.

@@ -10,4 +10,5 @@ void display_prompt(void)
 	{
 		perror("Error printing prompt");
 	}
+	fflush(stdout);
 }
