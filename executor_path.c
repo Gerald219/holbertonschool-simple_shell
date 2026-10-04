@@ -4,101 +4,98 @@
 #include <sys/stat.h>
 
 /**
- * split_path - Splits the PATH environment variable into folders
- * @path_env: The PATH variable
- *
- * Return: Array of folder strings or NULL
+ * free_array - Release an array of separately allocated strings
+ * @array: NULL-terminated array
+ */
+void free_array(char **array)
+{
+	size_t i;
+
+	if (!array)
+		return;
+	for (i = 0; array[i]; i++)
+		free(array[i]);
+	free(array);
+}
+
+/**
+ * split_path - Split PATH, preserving empty entries as the current directory
+ * @path_env: PATH value
+ * Return: Owned folder array or NULL
  */
 char **split_path(char *path_env)
 {
 	char **folders;
-	char *path_copy, *token;
-	int i = 0;
+	const char *start, *end, *cursor;
+	size_t count = 1, i = 0, len;
 
 	if (!path_env)
 		return (NULL);
-
-	path_copy = strdup(path_env);
-	if (!path_copy)
-		return (NULL);
-
-	folders = malloc(sizeof(char *) * 64);
+	for (cursor = path_env; *cursor; cursor++)
+		if (*cursor == ':')
+			count++;
+	folders = calloc(count + 1, sizeof(char *));
 	if (!folders)
-	{
-		free(path_copy);
 		return (NULL);
-	}
-
-	token = strtok(path_copy, ":");
-	while (token != NULL)
-	{
-		folders[i] = strdup(token);
-		if (!folders[i])
+	start = path_env;
+	do {
+		end = strchr(start, ':');
+		len = end ? (size_t)(end - start) : strlen(start);
+		folders[i] = len ? strndup(start, len) : strdup(".");
+		if (!folders[i++])
 		{
-			free(path_copy);
+			free_array(folders);
 			return (NULL);
 		}
-		token = strtok(NULL, ":");
-		i++;
-	}
-	folders[i] = NULL;
-	free(path_copy);
+		if (end)
+			start = end + 1;
+	} while (end);
 	return (folders);
 }
+
 /**
  * build_path - Build a full path string
  * @folder: Folder name
  * @command: Command name
- *
- * Return: Full path string
+ * Return: Owned path or NULL
  */
 char *build_path(char *folder, char *command)
 {
 	char *full_path;
-	int len;
+	size_t len = strlen(folder) + strlen(command) + 2;
 
-	len = strlen(folder) + strlen(command) + 2;
-	full_path = malloc(sizeof(char) * len);
-
+	full_path = malloc(len);
 	if (!full_path)
 		return (NULL);
-
 	strcpy(full_path, folder);
 	strcat(full_path, "/");
 	strcat(full_path, command);
-
 	return (full_path);
 }
 
 /**
- * find_full_path - Search for the command in PATH directories
- * @command: The command name
- * @path_dirs: Array of folders from PATH
- *
- * Return: Full path if found or NULL
+ * find_full_path - Find an executable regular file in the supplied folders
+ * @command: Command name
+ * @path_dirs: Folder array
+ * Return: Owned path or NULL
  */
 char *find_full_path(char *command, char **path_dirs)
 {
 	struct stat st;
 	char *full_path;
-	int i = 0;
-
-	path_dirs = split_path(_getenv("PATH"));
+	size_t i;
 
 	if (!command || !path_dirs)
 		return (NULL);
-
-	while (path_dirs[i])
+	for (i = 0; path_dirs[i]; i++)
 	{
 		full_path = build_path(path_dirs[i], command);
 		if (!full_path)
 			return (NULL);
-		if (stat(full_path, &st) == 0)
+		if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) &&
+			access(full_path, X_OK) == 0)
 			return (full_path);
-
 		free(full_path);
-		i++;
 	}
 	return (NULL);
 }
-

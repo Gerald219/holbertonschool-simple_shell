@@ -8,18 +8,8 @@
  */
 void exit_shell(char **args)
 {
-	if (args != NULL)
-	{
-		int i = 0;
-
-		while (args[i] != NULL)
-		{
-			free(args[i]);
-			i++;
-		}
-
-		free(args);
-	}
+	/* Tokens point into the input buffer and must not be freed individually. */
+	free(args);
 
 	exit(EXIT_SUCCESS);
 }

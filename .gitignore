@@ -1,0 +1,8 @@
+# Generated executables and object files
+/hsh
+*.o
+# Editor and Python cache files
+*.swp
+*.swo
+*~
+__pycache__/

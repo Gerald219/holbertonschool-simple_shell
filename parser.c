@@ -10,23 +10,34 @@
  */
 char **parser_input(char *input)
 {
-	char **args;
+	char **args, **grown;
 	char *token;
-	int i = 0;
+	size_t i = 0, capacity = 16;
 
 	if (!input)
 		return (NULL);
 
-	args = malloc(sizeof(char *) * 64);
+	args = malloc(sizeof(char *) * capacity);
 	if (!args)
 		return (NULL);
 
-	token = strtok(input, " \n");
+	token = strtok(input, " \t\r\n");
 	while (token != NULL)
 	{
+		if (i + 1 == capacity)
+		{
+			capacity *= 2;
+			grown = realloc(args, sizeof(char *) * capacity);
+			if (!grown)
+			{
+				free(args);
+				return (NULL);
+			}
+			args = grown;
+		}
 		args[i] = token;
 		i++;
-		token = strtok(NULL, " \n");
+		token = strtok(NULL, " \t\r\n");
 	}
 	args[i] = NULL;
 
